@@ -1,0 +1,413 @@
+{
+	"info": {
+		"_postman_id": "d7393b96-b413-43b6-8ae0-bf0692cdba73",
+		"name": "EAD-COURSE",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "30344579",
+		"_collection_link": "https://i-dont-know-4771.postman.co/workspace/ead6ce3f-7503-4034-bee3-a54aeded82be/collection/30344579-d7393b96-b413-43b6-8ae0-bf0692cdba73?action=share&source=collection_link&creator=30344579"
+	},
+	"item": [
+		{
+			"name": "COURSES",
+			"item": [
+				{
+					"name": "Find All Paged",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host8082}}/courses?page=0&size=12&sort=CreationDate,ASC&name=course 1&courseStatus=CONCLUDED&courseLevel=BEGINNER",
+							"host": [
+								"{{host8082}}"
+							],
+							"path": [
+								"courses"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "12"
+								},
+								{
+									"key": "sort",
+									"value": "CreationDate,ASC"
+								},
+								{
+									"key": "name",
+									"value": "course 1"
+								},
+								{
+									"key": "courseStatus",
+									"value": "CONCLUDED"
+								},
+								{
+									"key": "courseLevel",
+									"value": "BEGINNER"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{host8082}}/courses/d719fea0-a89b-4c6a-bd9d-170d25471523"
+					},
+					"response": []
+				},
+				{
+					"name": "Insert course",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\" : \"Course name\",\r\n  \"description\" : \"Learning Java + Spring\",\r\n  \"imageUrl\" : \"www.image.com.br\",\r\n  \"instructorId\" : \"2f1c4ce1-2e31-47a3-a2dc-cbd0ae0bd402\",\r\n  \"status\" : \"CONCLUDED\",\r\n  \"level\" : \"BEGINNER\",\r\n  \"modules\" : [\r\n    {\r\n        \"title\" : \"Module name\",\r\n        \"description\" : \"POO Pillars in Java\"\r\n    }\r\n  ]\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host8082}}/courses"
+					},
+					"response": []
+				},
+				{
+					"name": "Update By Id",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\" : \"Learning Java + Spring 1.0\",\r\n    \"imageUrl\" : \"www.image.com\",\r\n    \"instructorId\" : \"2f1c4ce1-2e31-47a3-a2dc-cbd0ae0bd402\",\r\n    \"status\" : \"CONCLUDED\",\r\n    \"level\" : \"BEGINNER\",\r\n    \"modules\" : [\r\n        {\r\n            \"title\" : \"Module 1.0\",\r\n            \"description\" : \"Pílares de POO em Java 1.0\"\r\n        }\r\n    ]\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host8082}}/courses/d719fea0-a89b-4c6a-bd9d-170d25471523"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Name By Id",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"course 2.0\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host8082}}/courses/d719fea0-a89b-4c6a-bd9d-170d25471523/name"
+					},
+					"response": []
+				},
+				{
+					"name": "By Id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{host8082}}/courses/d719fea0-a89b-4c6a-bd9d-170d25471523"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "MODULES",
+			"item": [
+				{
+					"name": "Find All Paged",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host8082}}/modules?page=0&size=12&sort=title&title=titulo",
+							"host": [
+								"{{host8082}}"
+							],
+							"path": [
+								"modules"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "12"
+								},
+								{
+									"key": "sort",
+									"value": "title"
+								},
+								{
+									"key": "title",
+									"value": "titulo"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Query Method",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host8082}}/modules/course/c053b4c2-2ae5-4eb9-b222-6e970f28c3ec/modules?page=0&size=12&sort=ASC&title=Titulo",
+							"host": [
+								"{{host8082}}"
+							],
+							"path": [
+								"modules",
+								"course",
+								"c053b4c2-2ae5-4eb9-b222-6e970f28c3ec",
+								"modules"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "12"
+								},
+								{
+									"key": "sort",
+									"value": "ASC"
+								},
+								{
+									"key": "title",
+									"value": "Titulo"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{host8082}}/modules/60537f15-d843-45fd-b9e5-2b41c31a3fdc"
+					},
+					"response": []
+				},
+				{
+					"name": "Insert Module",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\" : \"Titulo 3\",\r\n    \"description\" : \"Pílares de POO em Java\",\r\n    \"course\" : {\r\n        \"name\" : \"course 3\",\r\n        \"description\" : \"Learning Java + Spring\",\r\n        \"imageUrl\" : \"www.image.com.br\",\r\n        \"instructorId\" : \"2f1c4ce1-2e31-47a3-a2dc-cbd0ae0bd402\",\r\n        \"status\" : \"CONCLUDED\",\r\n        \"level\" : \"BEGINNER\"\r\n    },\r\n    \"lessons\": [\r\n        {\r\n            \"title\" : \"lesson 03\",\r\n            \"description\" : \"Description 03\",\r\n            \"videoUrl\" : \"www.video.com\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host8082}}/modules"
+					},
+					"response": []
+				},
+				{
+					"name": "Update By Id",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\" : \"Módulo 04\",\r\n    \"description\" : \"Pílares de POO em Java (atualizado 4.0)\",\r\n    \"course\" : {\r\n        \"name\" : \"course 04\",\r\n        \"description\" : \"Learning Java + Spring 4.0\",\r\n        \"imageUrl\" : \"www.image.com.br\",\r\n        \"instructorId\" : \"2f1c4ce1-2e31-47a3-a2dc-cbd0ae0bd402\",\r\n        \"status\" : \"CONCLUDED\",\r\n        \"level\" : \"BEGINNER\"\r\n    },\r\n    \"lessons\" : [\r\n        {\r\n            \"title\": \"Lesson 04\",\r\n            \"description\": \"Description 04\",\r\n            \"videoUrl\": \"www.video.com.br\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host8082}}/modules/dc46c6e6-5c56-4da6-b1e9-bf684e61500e"
+					},
+					"response": []
+				},
+				{
+					"name": "By  Id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{host8082}}/modules/d7140bc0-8910-456b-aaaa-ea99fe5e7f95"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "LESSONS",
+			"item": [
+				{
+					"name": "Find All Paged",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host8082}}/lessons?page=0&size=12&sort=title&title=titulo",
+							"host": [
+								"{{host8082}}"
+							],
+							"path": [
+								"lessons"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "12"
+								},
+								{
+									"key": "sort",
+									"value": "title"
+								},
+								{
+									"key": "title",
+									"value": "titulo"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Query Method",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host8082}}/lessons/modules/8ac8c387-6105-451e-9d0f-a6ece8347f01/lessons?page=0&size=12&sort=ASC&title=Lesson",
+							"host": [
+								"{{host8082}}"
+							],
+							"path": [
+								"lessons",
+								"modules",
+								"8ac8c387-6105-451e-9d0f-a6ece8347f01",
+								"lessons"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "12"
+								},
+								{
+									"key": "sort",
+									"value": "ASC"
+								},
+								{
+									"key": "title",
+									"value": "Lesson"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{host8082}}/lessons/fcc48836-c3f0-40af-be12-fc628660d71b"
+					},
+					"response": []
+				},
+				{
+					"name": "Insert Lesson",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\" : \"Lesson 4\",\r\n    \"description\" : \"O link para acessar o site de geração do projeto é initializr.com\",\r\n    \"videoUrl\" : \"www.youtube.com\",\r\n    \"module\" : \r\n        {\r\n            \"id\" : \"d7140bc0-8910-456b-aaaa-ea99fe5e7f95\"\r\n        }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host8082}}/lessons"
+					},
+					"response": []
+				},
+				{
+					"name": "Update By Id",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\" : \"lesson 05\",\r\n    \"description\" : \"O link para acessar o site de geração do projeto é initializr.com 5.0\",\r\n    \"videoUrl\" : \"www.youtube.com.br\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host8082}}/lessons/58225571-568c-4c7a-983a-9b1a17401602"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Module",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"module\" : { \r\n        \"title\": \"Módulo 12\",\r\n        \"description\" : \"description 12\"\r\n    }  \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host8082}}/lessons/modules/lessons/58225571-568c-4c7a-983a-9b1a17401602"
+					},
+					"response": []
+				},
+				{
+					"name": "By Id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8082/modules/c8710cf4-d571-4373-900a-e6e3f4e1c587/lessons/e01bc96a-1eb0-4cc6-9b63-29bcf9cc2c80"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
