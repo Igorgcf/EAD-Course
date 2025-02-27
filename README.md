@@ -40,9 +40,9 @@ Baixe esses arquivos e importe-os para o seu Postman para utilizar os métodos H
 
 Download these files and import them into your Postman to use the ready-made HTTP methods along with the already configured environment variable, to perform the requests/responses.
 
-[Download Collections](https://github.com/IgorTecnologia/EAD-Course/blob/docs-postman/EAD-COURSE.postman_collection.json)
+[Download Collections](https://github.com/Igorgcf/EAD-Course/blob/docs-postman/EAD-COURSE.postman_collection.json)
 
-[Download Enviroment Variables](https://github.com/IgorTecnologia/EAD-Course/blob/docs-postman/Environment.postman_environment.json)
+[Download Enviroment Variables](https://github.com/Igorgcf/EAD-Course/blob/docs-postman/Environment.postman_environment.json)
 
 ## API Endpoints
 The API provides the following endpoints:
