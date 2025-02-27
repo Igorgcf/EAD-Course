@@ -12,8 +12,16 @@ public class UtilsServiceImpl implements UtilsService {
     String REQUEST_URI = "http://localhost:8087";
 
     @Override
-    public String createUrl(UUID userId, Pageable pageable) {
-        return REQUEST_URI + "/users?courseId=" + userId + "&page=" + pageable.getPageNumber() + "&size="
+    public String createUrl(UUID courseId, Pageable pageable) {
+        return REQUEST_URI + "/users?courseId=" + courseId + "&page=" + pageable.getPageNumber() + "&size="
                 + pageable.getPageSize() + "&sort=" + pageable.getSort().toString().replaceAll(": ", ",");
     }
+
+    @Override
+    public String createUrl(UUID userId) {
+        return REQUEST_URI + "/users/" + userId;
+
+    }
+
+
 }
