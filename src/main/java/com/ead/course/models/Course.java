@@ -86,4 +86,8 @@ public class Course implements Serializable {
         this.courseLevel = courseLevel;
         this.instructorId = instructorId;
     }
+
+    public CourseUser convertToCourseUser(UUID userId){
+        return new CourseUser(null, this, userId);
+    }
 }
