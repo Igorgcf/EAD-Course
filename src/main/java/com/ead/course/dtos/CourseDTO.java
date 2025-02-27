@@ -3,6 +3,7 @@ package com.ead.course.dtos;
 import com.ead.course.enums.Level;
 import com.ead.course.enums.Status;
 import com.ead.course.models.Course;
+import com.ead.course.models.CourseUser;
 import com.ead.course.models.Module;
 import com.ead.course.validations.NameConstraint;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -103,4 +104,5 @@ public class CourseDTO {
         this(entity);
         modules.forEach(x -> this.modules.add(new ModuleDTO(x)));
     }
+
 }
