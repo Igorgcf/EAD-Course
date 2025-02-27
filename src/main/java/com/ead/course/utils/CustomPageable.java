@@ -8,7 +8,6 @@ public class CustomPageable implements Pageable {
 
     private int pageNumber;
     private int pageSize;
-    private Sort sort;
 
     @Override
     public int getPageNumber() {
