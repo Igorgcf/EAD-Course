@@ -4,6 +4,8 @@ import com.ead.course.enums.UserStatus;
 import com.ead.course.enums.UserType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -12,6 +14,12 @@ import java.util.UUID;
 @Data
 public class UserDTO {
 
+    public interface UserView{
+        public static interface RegistrationPost{}
+    }
+
+    @NotNull(groups = UserView.RegistrationPost.class, message = "The field id is mandatory.")
+    @JsonView(UserView.RegistrationPost.class)
     private UUID id;
     private String username;
     private String email;
