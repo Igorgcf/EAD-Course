@@ -58,8 +58,8 @@ public class CourseController {
 
     @PostMapping
     public ResponseEntity<CourseDTO> insert(@JsonView(CourseDTO.CourseView.registrationPost.class)
-                                              @Validated(CourseDTO.CourseView.registrationPost.class)
-                                              @RequestBody @Valid CourseDTO dto){
+                                            @Validated(CourseDTO.CourseView.registrationPost.class)
+                                            @RequestBody @Valid CourseDTO dto){
 
         dto = service.insert(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
