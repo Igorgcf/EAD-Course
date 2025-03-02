@@ -1,14 +1,20 @@
 package com.ead.course.services.impl;
 
+import com.ead.course.clients.CourseClient;
 import com.ead.course.dtos.CourseDTO;
 import com.ead.course.dtos.ModuleDTO;
+import com.ead.course.dtos.UserDTO;
+import com.ead.course.enums.UserType;
 import com.ead.course.models.Course;
+import com.ead.course.models.CourseUser;
 import com.ead.course.models.Lesson;
 import com.ead.course.models.Module;
 import com.ead.course.repositories.CourseRepository;
+import com.ead.course.repositories.CourseUserRepository;
 import com.ead.course.repositories.LessonRepository;
 import com.ead.course.repositories.ModuleRepository;
 import com.ead.course.services.CourseService;
+import com.ead.course.services.exceptions.BadRequestException;
 import com.ead.course.services.exceptions.ResourceNotFoundException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +35,9 @@ import java.util.UUID;
 public class CourseServiceImpl implements CourseService {
 
     @Autowired
+    private CourseUserRepository courseUserRepository;
+
+    @Autowired
     private CourseRepository repository;
 
     @Autowired
@@ -36,6 +45,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private LessonRepository lessonRepository;
+
+    @Autowired
+    private CourseClient client;
 
 
     @Transactional(readOnly = true)
@@ -60,8 +72,15 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public CourseDTO insert(CourseDTO dto) {
 
-        log.debug("Insert CourseDTO received {}, ModuleDTO received {}" , dto,
+        log.debug("Insert CourseDTO received: {}, ModuleDTO received: {} " , dto,
         (dto.getModules() != null ? dto.getModules() : "Modules no provided"));
+
+
+        UserDTO userDTO = client.findById(dto.getInstructorId());
+
+        if(userDTO.getUserType().equals(UserType.STUDENT)){
+            throw new BadRequestException("User must be a instructor or admin.");
+        }
 
         Course entity = new Course();
         copyDtoToEntity(entity, dto);
@@ -69,7 +88,7 @@ public class CourseServiceImpl implements CourseService {
         entity.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
         repository.save(entity);
 
-        log.debug("Insert Course saved {}, Modules saved {}" , entity,
+        log.debug("Insert Course saved: {}, Modules saved: {} " , entity,
                 (entity.getModules() != null ? entity.getModules() : "No modules associated"));
 
         log.info("Course saved successfully Id: {}", entity.getId());
@@ -81,7 +100,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public CourseDTO update(UUID id, CourseDTO dto) {
 
-        log.debug("Update CourseDTO received {}, ModuleDTO received {}" , dto,
+        log.debug("Update CourseDTO received: {}, ModuleDTO received: {}" , dto,
                 (dto.getModules() != null ? dto.getModules() : "Modules no provided"));
 
         Optional<Course> obj = repository.findById(id);
@@ -134,6 +153,11 @@ public class CourseServiceImpl implements CourseService {
                  }
             }
             moduleRepository.deleteAll(list);
+        }
+
+        List<CourseUser> courseUsers = courseUserRepository.findAllCourseUserIntoCourse(id);
+        if(courseUsers != null && !courseUsers.isEmpty()){
+            courseUserRepository.deleteAll(courseUsers);
         }
 
         repository.deleteById(id);
