@@ -3,7 +3,6 @@ package com.ead.course.dtos;
 import com.ead.course.enums.Level;
 import com.ead.course.enums.Status;
 import com.ead.course.models.Course;
-import com.ead.course.models.CourseUser;
 import com.ead.course.models.Module;
 import com.ead.course.validations.NameConstraint;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -18,7 +17,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Data
