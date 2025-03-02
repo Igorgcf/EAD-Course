@@ -1,7 +1,9 @@
 package com.ead.course.controllers.exceptions;
 
+import com.ead.course.services.exceptions.BadRequestException;
 import com.ead.course.services.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -47,6 +49,22 @@ public class ResourceExceptionHandler {
         for (FieldError f : e.getBindingResult().getFieldErrors()) {
             err.addError(f.getField(), f.getDefaultMessage());
         }
+
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ValidatorError> validation(BadRequestException e, HttpServletRequest request) {
+
+        ValidatorError err = new ValidatorError();
+
+        HttpStatus status = HttpStatus.CONFLICT;
+
+        err.setTimeStamp(LocalDateTime.now(ZoneId.of("UTC")));
+        err.setStatus(status.value());
+        err.setError("Bad request");
+        err.setMessage(e.getMessage());
+        err.setPath(request.getRequestURI());
 
         return ResponseEntity.status(status).body(err);
     }
