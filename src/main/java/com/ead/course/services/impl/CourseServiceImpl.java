@@ -105,6 +105,13 @@ public class CourseServiceImpl implements CourseService {
 
         Optional<Course> obj = repository.findById(id);
         Course entity = obj.orElseThrow(() -> new ResourceNotFoundException("Id not found: " + id));
+
+        UserDTO userDTO = client.findById(dto.getInstructorId());
+
+        if(userDTO.getUserType().equals(UserType.STUDENT)){
+            throw new BadRequestException("User must be a instructor or admin.");
+        }
+
         entity.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
         copyDtoToEntity(entity, dto);
         repository.save(entity);
