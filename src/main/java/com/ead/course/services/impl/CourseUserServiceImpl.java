@@ -9,6 +9,7 @@ import com.ead.course.models.CourseUser;
 import com.ead.course.repositories.CourseRepository;
 import com.ead.course.repositories.CourseUserRepository;
 import com.ead.course.services.CourseUserService;
+import com.ead.course.services.exceptions.BadRequestException;
 import com.ead.course.services.exceptions.ResourceNotFoundException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,16 +37,16 @@ public class CourseUserServiceImpl implements CourseUserService {
     public CourseUserDTO saveAndSendSubscriptionUserInCourse(UUID courseId, UserDTO dto) {
 
         Optional<Course> obj = repository.findById(courseId);
-        Course entity = obj.orElseThrow(() -> new ResourceNotFoundException("Id not found: " + courseId));
+        Course entity = obj.orElseThrow(() -> new ResourceNotFoundException("Course Id not found: " + courseId));
 
         boolean existsByCourseIdAndUserId = courseUserRepository.existsByCourseIdAndUserId(courseId, dto.getId());
         if(existsByCourseIdAndUserId){
-            throw new RuntimeException("User already subscribed to this course");
+            throw new BadRequestException("User already subscribed to this course");
         }
 
-        UserDTO userDTO = client.findById(dto.getId());
-        if(userDTO.getUserStatus().equals(UserStatus.BLOCKED)){
-            throw new RuntimeException("User is blocked");
+        dto = client.findById(dto.getId());
+        if(dto.getUserStatus().equals(UserStatus.BLOCKED)){
+            throw new BadRequestException("User is blocked");
         }
 
         CourseUser courseUser = entity.convertToCourseUser(dto.getId());
