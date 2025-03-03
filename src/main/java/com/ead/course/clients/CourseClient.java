@@ -25,9 +25,6 @@ import java.util.UUID;
 @Component
 public class CourseClient {
 
-    @Value("${ead.api.url.authuser}")
-    String REQUEST_URL_AUTHUSER;
-
     @Autowired
     private RestTemplate restTemplate;
 
@@ -81,7 +78,9 @@ public class CourseClient {
 
     public void postSubscriptionUserInCourse(Course entity, UUID userId){
 
-        String url = REQUEST_URL_AUTHUSER + "/users/" + userId + "/courses/subscription";
+        String REQUEST_URL_AUTHUSER = service.createUrl(userId);
+
+        String url = REQUEST_URL_AUTHUSER + "/courses/subscription";
         CourseDTO dto = new CourseDTO();
         dto = new CourseDTO(entity);
         restTemplate.postForObject(url, dto, String.class);
