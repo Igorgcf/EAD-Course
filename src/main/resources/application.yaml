@@ -24,6 +24,7 @@ ead:
   api:
     url:
       authuser: 'http://ead-authuser-service'
+
 eureka:
   client:
     serviceUrl:
