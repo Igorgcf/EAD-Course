@@ -183,6 +183,8 @@ public class CourseServiceImpl implements CourseService {
 
         if(dto.getDescription() != null){
             entity.setDescription(dto.getDescription());
+        }else{
+            entity.setDescription(entity.getDescription());
         }
 
         if(dto.getImageUrl() != null){
