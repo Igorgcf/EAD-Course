@@ -3,6 +3,7 @@ package com.ead.course.dtos;
 import com.ead.course.enums.UserStatus;
 import com.ead.course.enums.UserType;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.validation.constraints.NotNull;
@@ -12,14 +13,15 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDTO {
 
     public interface UserView{
         public static interface RegistrationPost{}
     }
 
-    @NotNull(groups = UserView.RegistrationPost.class, message = "The field id is mandatory.")
     @JsonView(UserView.RegistrationPost.class)
+    @NotNull(groups = UserView.RegistrationPost.class, message = "The field id is mandatory.")
     private UUID id;
     private String username;
     private String email;
