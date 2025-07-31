@@ -13,9 +13,12 @@ import com.ead.course.services.exceptions.BadRequestException;
 import com.ead.course.services.exceptions.ResourceNotFoundException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -31,6 +34,13 @@ public class CourseUserServiceImpl implements CourseUserService {
 
     @Autowired
     private CourseClient client;
+
+    @Transactional
+    @Override
+    public Page<CourseUserDTO> findAllPaged(Pageable pageable) {
+        Page<CourseUser> page = courseUserRepository.findAll(pageable);
+        return page.map(CourseUserDTO::new);
+    }
 
     @Transactional
     @Override
@@ -65,5 +75,21 @@ public class CourseUserServiceImpl implements CourseUserService {
 
         return new CourseUserDTO(courseUser.getId(), courseUser.getUserId(), courseUser.getCourse());
 
+    }
+
+    @Transactional
+    @Override
+    public void deleteCourseUserByUser(UUID userId) {
+
+        log.debug("Deleting CourseUser by userId: {}", userId);
+
+        List<CourseUser> courseUsers = courseUserRepository.findAllCourseUserByUserId(userId);
+        if(courseUsers != null && !courseUsers.isEmpty()){
+            courseUserRepository.deleteAll(courseUsers);
+        } else {
+            throw new ResourceNotFoundException("CourseUser not found for User Id: " + userId);
+        }
+
+        log.info("CourseUser deleted successfully for User Id: {}", userId);
     }
 }
