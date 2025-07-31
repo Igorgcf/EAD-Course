@@ -1,6 +1,7 @@
 package com.ead.course.dtos;
 
 import com.ead.course.models.Course;
+import com.ead.course.models.CourseUser;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
@@ -21,5 +22,11 @@ public class CourseUserDTO {
         this.id = id;
         this.userId = userId;
         this.courseDTO = new CourseDTO(course);
+    }
+
+    public CourseUserDTO(CourseUser entity){
+        this.id = entity.getId();
+        this.userId = entity.getUserId();
+        this.courseDTO = new CourseDTO(entity.getCourse());
     }
 }
