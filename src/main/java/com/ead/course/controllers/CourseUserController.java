@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,21 +33,33 @@ public class CourseUserController {
     @Autowired
     private CourseUserService service;
 
+    @GetMapping(value = "/courses/users")
+    public ResponseEntity<Page<CourseUserDTO>> findAllPaged(Pageable pageable) {
+
+        Page<CourseUserDTO> page = service.findAllPaged(pageable);
+        return ResponseEntity.ok().body(page);
+    }
+
     @GetMapping(value = "/courses/{courseId}/users")
     public ResponseEntity<Page<UserDTO>> findAllUserByCourse(@PageableDefault(page = 0, size = 12, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
-                                                             @PathVariable(value = "courseId") UUID courseId){
+                                                             @PathVariable(value = "courseId") UUID courseId) {
 
         Page<UserDTO> page = courseClient.findAllUsersByCourse(courseId, pageable);
-
         return ResponseEntity.ok().body(page);
     }
 
     @PostMapping(value = "/courses/{courseId}/users/subscription")
-    public ResponseEntity<CourseUserDTO> saveAndSendSubscriptionUserInCourse(@PathVariable (value = "courseId") UUID courseId,
+    public ResponseEntity<CourseUserDTO> saveAndSendSubscriptionUserInCourse(@PathVariable(value = "courseId") UUID courseId,
                                                                              @Validated(UserDTO.UserView.RegistrationPost.class)
-                                                                             @RequestBody @Valid UserDTO dto){
+                                                                             @RequestBody @Valid UserDTO dto) {
 
         CourseUserDTO response = service.saveAndSendSubscriptionUserInCourse(courseId, dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @DeleteMapping(value = "/courses/users/{userId}")
+    public ResponseEntity<Object> deleteCourseUser(@PathVariable(value = "userId") UUID userId) {
+        service.deleteCourseUserByUser(userId);
+        return ResponseEntity.ok().body("User successfully unsubscribed from the course.");
     }
 }
