@@ -144,6 +144,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public void deleteById(UUID id) {
 
+        boolean deleteCourseUserInAuthUser = false;
         log.debug("DeleteById received Id: {}" , id);
 
         Optional<Course> obj  = repository.findById(id);
@@ -165,9 +166,14 @@ public class CourseServiceImpl implements CourseService {
         List<CourseUser> courseUsers = courseUserRepository.findAllCourseUserIntoCourse(id);
         if(courseUsers != null && !courseUsers.isEmpty()){
             courseUserRepository.deleteAll(courseUsers);
+            deleteCourseUserInAuthUser = true;
         }
 
         repository.deleteById(id);
+        if(deleteCourseUserInAuthUser){
+            log.debug("DeleteById course Id deleted: {}, deleting course in auth user" , id);
+            client.deleteCourseInAuthUser(id);
+        }
 
         log.debug("DeleteById course Id deleted: {}", id);
         log.info("Course deleted successfully Id: {}", id);
