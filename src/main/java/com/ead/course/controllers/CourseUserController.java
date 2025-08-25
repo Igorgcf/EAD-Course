@@ -1,6 +1,5 @@
 package com.ead.course.controllers;
 
-import com.ead.course.dtos.CourseDTO;
 import com.ead.course.dtos.UserDTO;
 import com.ead.course.services.CourseService;
 import com.ead.course.services.UserService;
@@ -32,20 +31,20 @@ public class CourseUserController {
     @GetMapping(value = "/courses/{courseId}/users")
     public ResponseEntity<Object> findAllPaged(SpecificationTemplate.UserSpec spec,
                                                @PathVariable(value = "courseId") UUID courseId,
-                                               @PageableDefault(page = 0, size = 12, sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
+                                               @PageableDefault(page = 0, size = 12, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         Page<UserDTO> page;
         if(courseId != null) {
             page = service.findAllPaged(SpecificationTemplate.userCourseId(courseId).and(spec), pageable);
         }else{
             page = service.findAllPaged(spec, pageable);
         }
+
         return ResponseEntity.status(HttpStatus.OK).body(page);
     }
+        @PostMapping(value = "/courses/{courseId}/users/subscription")
+        public ResponseEntity<Object> saveAndSendSubscriptionUserInCourse (@PathVariable(value = "courseId") UUID courseId){
+        //@Validated(UserDTO.UserView.RegistrationPost.class)
+            return ResponseEntity.status(HttpStatus.CREATED).body("");
+        }
 
-    @PostMapping(value = "/courses/{courseId}/users/subscription")
-    public ResponseEntity<Object> saveAndSendSubscriptionUserInCourse(@PathVariable(value = "courseId") UUID courseId
-                                                                             //@Validated(UserDTO.UserView.RegistrationPost.class)
-                                                                             ) {
-        return ResponseEntity.status(HttpStatus.CREATED).body("");
-    }
 }
