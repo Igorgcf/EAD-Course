@@ -1,20 +1,15 @@
 package com.ead.course.services.impl;
 
-import com.ead.course.clients.CourseClient;
 import com.ead.course.dtos.CourseDTO;
 import com.ead.course.dtos.ModuleDTO;
-import com.ead.course.dtos.UserDTO;
-import com.ead.course.enums.UserType;
 import com.ead.course.models.Course;
-import com.ead.course.models.CourseUser;
 import com.ead.course.models.Lesson;
 import com.ead.course.models.Module;
 import com.ead.course.repositories.CourseRepository;
-import com.ead.course.repositories.CourseUserRepository;
 import com.ead.course.repositories.LessonRepository;
 import com.ead.course.repositories.ModuleRepository;
+import com.ead.course.repositories.UserRepository;
 import com.ead.course.services.CourseService;
-import com.ead.course.services.exceptions.BadRequestException;
 import com.ead.course.services.exceptions.ResourceNotFoundException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +30,7 @@ import java.util.UUID;
 public class CourseServiceImpl implements CourseService {
 
     @Autowired
-    private CourseUserRepository courseUserRepository;
+    private UserRepository courseUserRepository;
 
     @Autowired
     private CourseRepository repository;
@@ -45,10 +40,6 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private LessonRepository lessonRepository;
-
-    @Autowired
-    private CourseClient client;
-
 
     @Transactional(readOnly = true)
     @Override
@@ -76,11 +67,11 @@ public class CourseServiceImpl implements CourseService {
         (dto.getModules() != null ? dto.getModules() : "Modules no provided"));
 
 
-        UserDTO userDTO = client.findById(dto.getInstructorId());
+        /*UserDTO userDTO = client.findById(dto.getInstructorId());
 
         if(userDTO.getUserType().equals(UserType.STUDENT)){
             throw new BadRequestException("User must be a instructor or admin.");
-        }
+        }*/
 
         Course entity = new Course();
         copyDtoToEntity(entity, dto);
@@ -106,11 +97,11 @@ public class CourseServiceImpl implements CourseService {
         Optional<Course> obj = repository.findById(id);
         Course entity = obj.orElseThrow(() -> new ResourceNotFoundException("Id not found: " + id));
 
-        UserDTO userDTO = client.findById(dto.getInstructorId());
+        /*UserDTO userDTO = client.findById(dto.getInstructorId());
 
         if(userDTO.getUserType().equals(UserType.STUDENT)){
             throw new BadRequestException("User must be a instructor or admin.");
-        }
+        }*/
 
         entity.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
         copyDtoToEntity(entity, dto);
@@ -163,17 +154,7 @@ public class CourseServiceImpl implements CourseService {
             moduleRepository.deleteAll(list);
         }
 
-        List<CourseUser> courseUsers = courseUserRepository.findAllCourseUserIntoCourse(id);
-        if(courseUsers != null && !courseUsers.isEmpty()){
-            courseUserRepository.deleteAll(courseUsers);
-            deleteCourseUserInAuthUser = true;
-        }
-
         repository.deleteById(id);
-        if(deleteCourseUserInAuthUser){
-            log.debug("DeleteById course Id deleted: {}, deleting course in auth user" , id);
-            client.deleteCourseInAuthUser(id);
-        }
 
         log.debug("DeleteById course Id deleted: {}", id);
         log.info("Course deleted successfully Id: {}", id);
