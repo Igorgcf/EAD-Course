@@ -10,5 +10,4 @@ public interface UtilsService {
 
     String createUrl(UUID userId);
 
-    String createUrlForDelete(UUID courseId);
 }
