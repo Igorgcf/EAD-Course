@@ -1,7 +1,7 @@
 package com.ead.course.specification;
 
 import com.ead.course.models.Course;
-import com.ead.course.models.CourseUser;
+import com.ead.course.models.User;
 import com.ead.course.models.Lesson;
 import com.ead.course.models.Module;
 import jakarta.persistence.criteria.Expression;
@@ -52,14 +52,6 @@ public class SpecificationTemplate {
             Root<Module> module = query.from(Module.class);
             Expression<Collection<Lesson>> moduleLessons = module.get("lessons");
             return cd.and(cd.equal(module.get("id"), id), cd.isMember(lesson, moduleLessons));
-        };
-    }
-
-    public static Specification<Course> courseUserId(final UUID userId){
-        return(root, query, cb) -> {
-            query.distinct(true);
-            Join<Course, CourseUser> courseProd = root.join("courseUsers");
-            return cb.equal(courseProd.get("userId"), userId);
         };
     }
 }
