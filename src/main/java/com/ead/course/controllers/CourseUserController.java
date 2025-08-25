@@ -1,6 +1,5 @@
 package com.ead.course.controllers;
 
-import com.ead.course.dtos.UserDTO;
 import com.ead.course.services.CourseService;
 import com.ead.course.services.UserService;
 import jakarta.validation.Valid;
@@ -29,14 +28,6 @@ public class CourseUserController {
     private UserService service;
 
     private CourseService courseService;
-    
-    @GetMapping(value = "/courses/{courseId}/users")
-    public ResponseEntity<Page<UserDTO>> findAllUserByCourse(@PageableDefault(page = 0, size = 12, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
-                                                             @PathVariable(value = "courseId") UUID courseId) {
-
-        Page<UserDTO> page = null;
-        return ResponseEntity.ok().body(page);
-    }
 
     @PostMapping(value = "/courses/{courseId}/users/subscription")
     public ResponseEntity<Object> saveAndSendSubscriptionUserInCourse(@PathVariable(value = "courseId") UUID courseId,
