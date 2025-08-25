@@ -38,9 +38,12 @@ public class CourseController {
     public ResponseEntity<Page<CourseDTO>> findAllPaged(SpecificationTemplate.CourseSpec spec,
                                                         @PageableDefault(page = 0, size = 12, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
                                                         @RequestParam(required = false) UUID userId){
-
-        Page<CourseDTO> page = service.findAllPaged(spec, pageable);
-
+        Page<CourseDTO> page;
+        if(userId != null) {
+        page = service.findAllPaged(SpecificationTemplate.courseUserId(userId).and(spec), pageable);
+        }else{
+            page = service.findAllPaged(spec, pageable);
+        }
         return ResponseEntity.ok().body(page);
     }
 
