@@ -1,5 +1,6 @@
 package com.ead.course.services.impl;
 
+import com.ead.course.dtos.UserDTO;
 import com.ead.course.models.User;
 import com.ead.course.repositories.UserRepository;
 import com.ead.course.services.UserService;
@@ -21,6 +22,6 @@ public class UserServiceImpl implements UserService {
     public Page<UserDTO> findAllPaged(Specification<User> spec, Pageable pageable) {
 
         Page<User> page = repository.findAll(spec, pageable);
-        return page.map(x -> new UserDTO(x));
+        return page.map(UserDTO::new);
     }
 }
