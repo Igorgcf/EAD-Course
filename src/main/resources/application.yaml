@@ -16,6 +16,9 @@ Spring:
   output:
     ansi:
       enabled: Always
+  rabbitmq:
+    addresses: amqps://sespxjaw:14faVJUsb8ZUz9jyX0uM-7sqSh3qy3Oq@shark.rmq.cloudamqp.com/sespxjaw
+
 logging:
   level:
     com.ead: TRACE
