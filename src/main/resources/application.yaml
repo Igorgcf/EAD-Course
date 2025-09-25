@@ -29,8 +29,12 @@ ead:
   api:
     url:
       authuser: 'http://ead-authuser-service/ead-authuser/'
-
-eureka:
+  broker:
+    exchange:
+        userEventExchange: ead.userevent
+    queue:
+      userEventQueue:
+        name: ead.userevent.ms.course
   client:
     serviceUrl:
       defaultZone: 'http://localhost:8761/eureka'
