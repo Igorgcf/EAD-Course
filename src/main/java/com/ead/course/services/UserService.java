@@ -8,5 +8,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 public interface UserService {
 
+    Page<UserDTO> findAllPaged(Pageable pageable);
     Page<UserDTO> findAllPaged(Specification<User> spec, Pageable pageable);
+    UserDTO insert(UserDTO dto);
 }
