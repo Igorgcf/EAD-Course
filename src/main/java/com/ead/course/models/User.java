@@ -24,6 +24,9 @@ public class User implements Serializable {
     @Id
     private UUID id;
 
+    @Column(nullable = false, length = 50)
+    private String username;
+
     @Column(nullable = false, unique = true, length = 50)
     private String email;
 
@@ -35,6 +38,9 @@ public class User implements Serializable {
 
     @Column(nullable = false)
     private String userType;
+
+    @Column(length = 50)
+    private String phoneNumber;
 
     @Column(length = 50)
     private String cpf;
