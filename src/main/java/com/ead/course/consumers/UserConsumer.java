@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 public class UserConsumer {
 
@@ -24,9 +26,16 @@ public class UserConsumer {
     ))
     public void listenUserEvent(@Payload UserDTO dto){
 
+        UUID id = dto.getId();
         switch (ActionType.valueOf(dto.getActionType())){
             case CREATE:
                 service.insert(dto);
+                break;
+            case UPDATE:
+                service.update(id, dto);
+                break;
+            case DELETE:
+                service.deleteById(dto.getId());
                 break;
         }
     }
