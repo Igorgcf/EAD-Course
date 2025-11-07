@@ -2,6 +2,7 @@ package com.ead.course.controllers;
 
 import com.ead.course.dtos.CourseDTO;
 import com.ead.course.services.CourseService;
+import com.ead.course.services.impl.CourseServiceImpl;
 import com.ead.course.specification.SpecificationTemplate;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.validation.Valid;
@@ -32,7 +33,7 @@ import java.util.UUID;
 public class CourseController {
 
     @Autowired
-    private CourseService service;
+    private CourseServiceImpl service;
 
     @GetMapping
     public ResponseEntity<Page<CourseDTO>> findAllPaged(SpecificationTemplate.CourseSpec spec,
