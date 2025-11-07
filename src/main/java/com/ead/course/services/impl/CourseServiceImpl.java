@@ -2,14 +2,17 @@ package com.ead.course.services.impl;
 
 import com.ead.course.dtos.CourseDTO;
 import com.ead.course.dtos.ModuleDTO;
+import com.ead.course.enums.UserType;
 import com.ead.course.models.Course;
 import com.ead.course.models.Lesson;
 import com.ead.course.models.Module;
+import com.ead.course.models.User;
 import com.ead.course.repositories.CourseRepository;
 import com.ead.course.repositories.LessonRepository;
 import com.ead.course.repositories.ModuleRepository;
 import com.ead.course.repositories.UserRepository;
 import com.ead.course.services.CourseService;
+import com.ead.course.services.exceptions.BadRequestException;
 import com.ead.course.services.exceptions.ResourceNotFoundException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +33,7 @@ import java.util.UUID;
 public class CourseServiceImpl implements CourseService {
 
     @Autowired
-    private UserRepository courseUserRepository;
+    private UserRepository userRepository;
 
     @Autowired
     private CourseRepository repository;
@@ -46,6 +49,9 @@ public class CourseServiceImpl implements CourseService {
     public Page<CourseDTO> findAllPaged(Specification<Course> spec, Pageable pageable) {
 
         Page<Course> page = repository.findAll(spec, pageable);
+        if(page.isEmpty()){
+            throw new ResourceNotFoundException("No courses were found.");
+        }
         return page.map(x -> new CourseDTO(x, x.getModules()));
     }
 
@@ -67,11 +73,12 @@ public class CourseServiceImpl implements CourseService {
                 (dto.getModules() != null ? dto.getModules() : "Modules no provided"));
 
 
-        /*UserDTO userDTO = client.findById(dto.getInstructorId());
+        Optional<User> obj = userRepository.findById(dto.getInstructorId());
+        User user = obj.orElseThrow(() -> new ResourceNotFoundException("Instructor id not found: " + dto.getInstructorId()));
 
-        if(userDTO.getUserType().equals(UserType.STUDENT)){
-            throw new BadRequestException("User must be a instructor or admin.");
-        }*/
+        if(user.getUserType().equals(UserType.STUDENT.toString())){
+            throw new BadRequestException("User is student, must be a instructor or admin.");
+        }
 
         Course entity = new Course();
         copyDtoToEntity(entity, dto);
@@ -97,11 +104,12 @@ public class CourseServiceImpl implements CourseService {
         Optional<Course> obj = repository.findById(id);
         Course entity = obj.orElseThrow(() -> new ResourceNotFoundException("Id not found: " + id));
 
-        /*UserDTO userDTO = client.findById(dto.getInstructorId());
+        Optional<User> opt = userRepository.findById(dto.getInstructorId());
+        User user = opt.orElseThrow(() -> new ResourceNotFoundException("Instructor id not found: " + dto.getInstructorId()));
 
-        if(userDTO.getUserType().equals(UserType.STUDENT)){
-            throw new BadRequestException("User must be a instructor or admin.");
-        }*/
+        if(user.getUserType().equals(UserType.STUDENT.toString())){
+            throw new BadRequestException("User is student, must be a instructor or admin.");
+        }
 
         entity.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
         copyDtoToEntity(entity, dto);
@@ -151,6 +159,11 @@ public class CourseServiceImpl implements CourseService {
                 }
             }
             moduleRepository.deleteAll(list);
+        }
+
+        boolean exists = repository.existsCourseAndUserByCourseId(id);
+        if(exists){
+           repository.deleteCourseUserByCourseId(id);
         }
 
         repository.deleteById(id);
