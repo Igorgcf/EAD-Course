@@ -1,42 +1,11 @@
-server:
-  port: 8082
-  servlet:
-    context-path: '/ead-course/'
-
 Spring:
   application:
     name: ead-course-service
+  config:
+    import: 'configserver:'
+  cloud:
+    config:
+      discovery:
+        serviceId: ead-config-service
   profiles:
     active: h2
-  jpa:
-    properties:
-      hibernate:
-        show_sql: true
-        format_sql: true
-  output:
-    ansi:
-      enabled: Always
-  rabbitmq:
-    addresses: amqps://sespxjaw:14faVJUsb8ZUz9jyX0uM-7sqSh3qy3Oq@shark.rmq.cloudamqp.com/sespxjaw
-
-logging:
-  level:
-    com.ead: TRACE
-    root: INFO
-    org.springframework.web: DEBUG
-    org.hibernate: INFO
-ead:
-  api:
-    url:
-      authuser: 'http://ead-authuser-service/ead-authuser/'
-  broker:
-    exchange:
-        userEventExchange: ead.userevent
-    queue:
-      userEventQueue:
-        name: ead.userevent.ms.course
-  client:
-    serviceUrl:
-      defaultZone: 'http://localhost:8761/eureka'
-  instance:
-    hostname: localhost
