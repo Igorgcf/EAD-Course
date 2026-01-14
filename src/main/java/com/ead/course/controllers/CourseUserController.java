@@ -1,6 +1,8 @@
 package com.ead.course.controllers;
 
+import com.ead.course.dtos.CourseDTO;
 import com.ead.course.dtos.UserDTO;
+import com.ead.course.services.impl.CourseServiceImpl;
 import com.ead.course.services.impl.CourseUserServiceImpl;
 import com.ead.course.services.impl.UserServiceImpl;
 import com.ead.course.specification.SpecificationTemplate;
@@ -23,11 +25,15 @@ public class CourseUserController {
     @Autowired
     private UserServiceImpl userService;
 
+    @Autowired
+    private CourseServiceImpl courseService;
+
     @PostMapping(value = "/courses/{courseId}/users/subscription")
     public ResponseEntity<Object> saveSubscriptionUserInCourse(@PathVariable UUID courseId,
                                                                @RequestBody UserDTO dto) {
 
-        service.saveSubscriptionUserInCourse(courseId, dto);
+        CourseDTO courseDto = courseService.findById(courseId);
+        service.saveSubscriptionUserInCourseAndSendNotification(courseDto, dto);
         return ResponseEntity.ok().body("Subscription successfully! CourseId: " + courseId + " | " + " UserId: " + dto.getId());
     }
 
