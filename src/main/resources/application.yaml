@@ -7,5 +7,7 @@ Spring:
     config:
       discovery:
         serviceId: ead-config-service
+      username: configserver
+      password: ead-secret
   profiles:
     active: h2
