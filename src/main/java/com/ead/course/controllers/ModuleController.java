@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,6 +34,7 @@ public class ModuleController {
     @Autowired
     private ModuleService service;
 
+    @PreAuthorize("hasAnyRole('STUDENT')")
     @GetMapping
     public ResponseEntity<Page<ModuleDTO>> findAllPaged(SpecificationTemplate.ModuleSpec spec,
                                                         @PageableDefault(page = 0, size = 12, sort = "id", direction = Sort.Direction.ASC)
@@ -42,6 +44,7 @@ public class ModuleController {
         return ResponseEntity.ok().body(page);
     }
 
+    @PreAuthorize("hasAnyRole('STUDENT')")
     @GetMapping(value = "/course/{id}/modules")
     public ResponseEntity<Page<ModuleDTO>> queryMethod(@PathVariable UUID id,
                                                        SpecificationTemplate.ModuleSpec spec, Pageable pageable){
@@ -50,6 +53,7 @@ public class ModuleController {
         return ResponseEntity.ok().body(list);
     }
 
+    @PreAuthorize("hasAnyRole('STUDENT')")
     @GetMapping(value = "/{id}")
     public ResponseEntity<ModuleDTO> findById(@PathVariable UUID id){
 
@@ -57,6 +61,7 @@ public class ModuleController {
         return ResponseEntity.ok().body(dto);
     }
 
+    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
     @PostMapping
     public ResponseEntity<ModuleDTO> insert(@JsonView(ModuleDTO.ModuleView.registrationPost.class)
                                                 @Validated(ModuleDTO.ModuleView.registrationPost.class)
@@ -66,6 +71,7 @@ public class ModuleController {
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
+    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
     @PutMapping(value = "/{id}")
     public ResponseEntity<ModuleDTO> update(@PathVariable UUID id,
                                                 @JsonView(ModuleDTO.ModuleView.updatePut.class)
@@ -75,6 +81,8 @@ public class ModuleController {
         dto = service.update(id, dto);
         return ResponseEntity.ok().body(dto);
     }
+
+    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Object> deleteById(@PathVariable UUID id){
 
