@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -28,6 +29,7 @@ public class CourseUserController {
     @Autowired
     private CourseServiceImpl courseService;
 
+    @PreAuthorize("hasAnyRole('STUDENT')")
     @PostMapping(value = "/courses/{courseId}/users/subscription")
     public ResponseEntity<Object> saveSubscriptionUserInCourse(@PathVariable UUID courseId,
                                                                @RequestBody UserDTO dto) {
@@ -37,6 +39,7 @@ public class CourseUserController {
         return ResponseEntity.ok().body("Subscription successfully! CourseId: " + courseId + " | " + " UserId: " + dto.getId());
     }
 
+    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
     @GetMapping(value = "/courses/{courseId}/users")
     public ResponseEntity<Page<UserDTO>> findAllUserByCourse(SpecificationTemplate.UserSpec spec,
                                                              @PageableDefault (page = 0, size = 12, sort = "id", direction = Sort.Direction.ASC)
