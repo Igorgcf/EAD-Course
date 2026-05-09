@@ -1,7 +1,6 @@
 package com.ead.course.controllers;
 
 import com.ead.course.dtos.CourseDTO;
-import com.ead.course.services.CourseService;
 import com.ead.course.services.impl.CourseServiceImpl;
 import com.ead.course.specification.SpecificationTemplate;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -13,17 +12,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -35,6 +26,7 @@ public class CourseController {
     @Autowired
     private CourseServiceImpl service;
 
+    @PreAuthorize("hasAnyRole('STUDENT')")
     @GetMapping
     public ResponseEntity<Page<CourseDTO>> findAllPaged(SpecificationTemplate.CourseSpec spec,
                                                         @PageableDefault(page = 0, size = 12, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
@@ -48,6 +40,7 @@ public class CourseController {
         return ResponseEntity.ok().body(page);
     }
 
+    @PreAuthorize("hasAnyRole('STUDENT')")
     @GetMapping(value = "/{id}")
     public ResponseEntity<CourseDTO> findById(@PathVariable UUID id){
 
@@ -55,6 +48,7 @@ public class CourseController {
         return ResponseEntity.ok().body(dto);
     }
 
+    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
     @PostMapping
     public ResponseEntity<CourseDTO> insert(@JsonView(CourseDTO.CourseView.registrationPost.class)
                                             @Validated(CourseDTO.CourseView.registrationPost.class)
@@ -64,6 +58,7 @@ public class CourseController {
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
+    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
     @PutMapping(value = "/{id}")
     public ResponseEntity<CourseDTO> update(@PathVariable UUID id,
                                             @JsonView(CourseDTO.CourseView.coursePut.class)
@@ -74,6 +69,7 @@ public class CourseController {
         return ResponseEntity.ok().body(dto);
     }
 
+    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
     @PutMapping(value = "/{id}/name")
     public ResponseEntity<Object> updateName(@PathVariable UUID id,
                                              @JsonView(CourseDTO.CourseView.namePut.class)
@@ -84,6 +80,7 @@ public class CourseController {
         return ResponseEntity.ok().body("Name updated successfully.");
     }
 
+    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Object> deleteById(@PathVariable UUID id){
 
