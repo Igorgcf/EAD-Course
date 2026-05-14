@@ -10,4 +10,4 @@ Spring:
       username: configserver
       password: ead-secret
   profiles:
-    active: h2
+    active: dev
