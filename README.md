@@ -242,6 +242,33 @@ Attention!!! To carry out unit and integration tests of the application, the H2 
 - PostgreSQL
 - IntelliJ IDEA
 - Postman
+---
+
+> ## ⚠️ Atenção
+> Conforme a arquitetura do projeto evoluiu e amadureceu, foi necessário criar uma nova branch principal chamada `main-v2`.
+>
+> Para garantir o funcionamento completo e eficiente da arquitetura, os microservices `Authuser` e `Course` devem ser executados utilizando a branch `main-v2`.
+
+---
+
+## Microservices da Arquitetura
+
+Para o funcionamento completo da arquitetura em ambiente local, todos os microservices do ecossistema devem estar em execução utilizando o profile ativo `dev`.
+
+Os microservices que compõem a arquitetura são:
+
+- [Authuser Microservice](https://github.com/Igorgcf/EAD-Authuser)
+- [Course Microservice](https://github.com/Igorgcf/EAD-Course)
+- [API Gateway](https://github.com/Igorgcf/EAD-API-Gateway)
+- [Service Discovery (Eureka Server)](https://github.com/Igorgcf/EAD-Service-Registry)
+- [Config Server](https://github.com/Igorgcf/EAD-Config-Server)
+- Execute [Notification Microservice](https://github.com/Igorgcf/EAD-Notification)
+  ou
+  [Notification-Hex Microservice](https://github.com/Igorgcf/EAD-Notification-Hexagonal)
+
+> ℹ️ Certifique-se de executar todos os serviços com o profile `dev` ativo para garantir a comunicação correta entre os microservices durante o desenvolvimento local.
+
+---
 
 ## Contributing
 
