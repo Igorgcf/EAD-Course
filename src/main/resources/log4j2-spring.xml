@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Configuration status="WARN">
+
+    <Appenders>
+
+        <Console name="Console" target="SYSTEM_OUT">
+            <EcsLayout
+                    serviceName="ead-course-service"
+                    serviceVersion="1.0.0"
+                    serviceEnvironment="dev"/>
+        </Console>
+
+        <File name="File"
+              fileName="logs/ead-course-service.log">
+
+            <EcsLayout
+                    serviceName="ead-course-service"
+                    serviceVersion="1.0.0"
+                    serviceEnvironment="dev"/>
+
+        </File>
+
+    </Appenders>
+
+    <Loggers>
+
+        <Root level="INFO">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="File"/>
+        </Root>
+
+    </Loggers>
+
+</Configuration>
