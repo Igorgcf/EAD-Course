@@ -7,7 +7,7 @@ Spring:
     config:
       discovery:
         serviceId: ead-config-service
-      username: configserver
-      password: ead-secret
+      username: ${CONFIG_SERVER_USERNAME}
+      password: ${CONFIG_SERVER_PASSWORD}
   profiles:
     active: dev
