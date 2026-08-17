@@ -76,9 +76,12 @@ public class CourseServiceImpl implements CourseService {
         Optional<User> obj = userRepository.findById(dto.getInstructorId());
         User user = obj.orElseThrow(() -> new ResourceNotFoundException("Instructor id not found: " + dto.getInstructorId()));
 
-        if(user.getUserType().equals(UserType.STUDENT.toString())){
+        if(user.getUserType().equals(UserType.USER.toString())){
+            throw new BadRequestException("User is user, must be a instructor or admin.");
+        } else if (user.getUserType().equals(UserType.STUDENT.toString())) {
             throw new BadRequestException("User is student, must be a instructor or admin.");
         }
+
 
         Course entity = new Course();
         copyDtoToEntity(entity, dto);
